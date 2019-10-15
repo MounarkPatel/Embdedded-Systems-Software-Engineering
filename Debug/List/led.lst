@@ -1,0 +1,88 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.12.3.989/W32 for MSP430           04/Oct/2019  18:39:53
+# Copyright 1996-2019 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 7.12
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  Z:\Applications\306\Homework 06\led.c
+#    Command line  =  
+#        -f C:\Users\MOUNAR~1\AppData\Local\Temp\EWB7D7.tmp
+#        ("Z:\Applications\306\Homework 06\led.c" -lC
+#        "Z:\Applications\306\Homework 06\Debug\List" -o
+#        "Z:\Applications\306\Homework 06\Debug\Obj" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR2355__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 8.0\430\lib\dlib\dl430xlsfn.h" -I ./\ --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large)
+#    Locale        =  English_USA.1252
+#    List file     =  Z:\Applications\306\Homework 06\Debug\List\led.lst
+#    Object file   =  Z:\Applications\306\Homework 06\Debug\Obj\led.r43
+#
+###############################################################################
+
+Z:\Applications\306\Homework 06\led.c
+      1          #include  "macros.h"
+      2          #include  "functions.h"
+      3          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x202
+   \   union <unnamed> _A_PAOUT_L
+   \                     _A_PAOUT_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x242
+   \   union <unnamed> _A_PCOUT_L
+   \                     _A_PCOUT_L:
+   \   000000                DS8 2
+      4          
+
+   \                                 In  segment CODE, align 2
+      5          void Init_LEDs(void){
+   \                     Init_LEDs:
+      6          //------------------------------------------------------------------------------
+      7          // LED Configurations
+      8          //------------------------------------------------------------------------------
+      9          // Turns on both LEDs
+     10            GREEN_LED_OFF;
+   \   000000   F2C040004302 BIC.B   #0x40, &0x243
+     11            RED_LED_OFF;
+   \   000006   D2C30202     BIC.B   #0x1, &0x202
+     12          //------------------------------------------------------------------------------
+     13          }
+   \   00000A   1001         RETA
+   \   00000C                REQUIRE _A_PCOUT_L
+   \   00000C                REQUIRE _A_PAOUT_L
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Init_LEDs
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      12  Init_LEDs
+       2  _A_PAOUT_L
+       2  _A_PCOUT_L
+
+ 
+ 12 bytes in segment CODE
+  4 bytes in segment DATA16_AN
+ 
+ 12 bytes of CODE memory
+  0 bytes of DATA memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none

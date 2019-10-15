@@ -1,0 +1,135 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.12.3.989/W32 for MSP430           04/Oct/2019  18:39:53
+# Copyright 1996-2019 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 7.12
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  Z:\Applications\306\Homework 06\init.c
+#    Command line  =  
+#        -f C:\Users\MOUNAR~1\AppData\Local\Temp\EWB729.tmp
+#        ("Z:\Applications\306\Homework 06\init.c" -lC
+#        "Z:\Applications\306\Homework 06\Debug\List" -o
+#        "Z:\Applications\306\Homework 06\Debug\Obj" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR2355__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 8.0\430\lib\dlib\dl430xlsfn.h" -I ./\ --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large)
+#    Locale        =  English_USA.1252
+#    List file     =  Z:\Applications\306\Homework 06\Debug\List\init.lst
+#    Object file   =  Z:\Applications\306\Homework 06\Debug\Obj\init.r43
+#
+###############################################################################
+
+Z:\Applications\306\Homework 06\init.c
+      1          #include  "macros.h"
+      2          #include  "functions.h"
+      3          #include  "msp430.h"
+      4          
+      5          extern char display_line[DISPLAY_HEIGHT][DISPLAY_LENGTH];
+      6          extern char *display[DISP_PTR];
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+      7          unsigned char display_mode;
+   \                     display_mode:
+   \   000000                DS8 1
+      8          extern volatile unsigned char display_changed;
+      9          extern volatile unsigned char update_display;
+     10          extern volatile unsigned int update_display_count;
+     11          extern volatile unsigned int Time_Sequence;
+     12          extern volatile char one_time;
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     13          unsigned int test_value;
+   \                     test_value:
+   \   000000                DS8 2
+     14          
+
+   \                                 In  segment CODE, align 2
+     15          void Init_Conditions(void){
+   \                     Init_Conditions:
+   \   000000   0A12         PUSH.W  R10
+     16          //------------------------------------------------------------------------------
+     17            int i;
+     18          
+     19            for(i=COUNT_INIT;i<DISPLAY_LENGTH;i++){
+   \   000002   0A43         MOV.W   #0x0, R10
+   \                     ??Init_Conditions_0:
+   \   000004   3A900B00     CMP.W   #0xb, R10
+   \   000008   0A34         JGE     ??Init_Conditions_1
+     20              display_line[DISP_ENTRY_1][i] = RESET_STATE;
+   \   00000A   CA43....     MOV.B   #0x0, display_line(R10)
+     21              display_line[DISP_ENTRY_2][i] = RESET_STATE;
+   \   00000E   CA43....     MOV.B   #0x0, display_line + 11(R10)
+     22              display_line[DISP_ENTRY_3][i] = RESET_STATE;
+   \   000012   CA43....     MOV.B   #0x0, display_line + 22(R10)
+     23              display_line[DISP_ENTRY_4][i] = RESET_STATE;
+   \   000016   CA43....     MOV.B   #0x0, display_line + 33(R10)
+     24            }
+   \   00001A   1A53         ADD.W   #0x1, R10
+   \   00001C   F33F         JMP     ??Init_Conditions_0
+     25            display_line[DISP_ENTRY_1][DISP_LENGTH_END] = RESET_STATE;
+   \                     ??Init_Conditions_1:
+   \   00001E   C243....     MOV.B   #0x0, &display_line + 10
+     26            display_line[DISP_ENTRY_2][DISP_LENGTH_END] = RESET_STATE;
+   \   000022   C243....     MOV.B   #0x0, &display_line + 21
+     27            display_line[DISP_ENTRY_3][DISP_LENGTH_END] = RESET_STATE;
+   \   000026   C243....     MOV.B   #0x0, &display_line + 32
+     28            display_line[DISP_ENTRY_4][DISP_LENGTH_END] = RESET_STATE;
+   \   00002A   C243....     MOV.B   #0x0, &display_line + 43
+     29          
+     30            display[DISP_ENTRY_1] = &display_line[DISP_ENTRY_1][DISP_ENTRY_START];
+   \   00002E   B240........ MOV.W   #display_line, &display
+     31            display[DISP_ENTRY_2] = &display_line[DISP_ENTRY_2][DISP_ENTRY_START];
+   \   000034   B240........ MOV.W   #display_line + 11, &display + 2
+     32            display[DISP_ENTRY_3] = &display_line[DISP_ENTRY_3][DISP_ENTRY_START];
+   \   00003A   B240........ MOV.W   #display_line + 22, &display + 4
+     33            display[DISP_ENTRY_4] = &display_line[DISP_ENTRY_4][DISP_ENTRY_START];
+   \   000040   B240........ MOV.W   #display_line + 33, &display + 6
+     34            update_display = RESET_STATE;
+   \   000046   C243....     MOV.B   #0x0, &update_display
+     35            update_display_count = RESET_STATE;
+   \   00004A   8243....     MOV.W   #0x0, &update_display_count
+     36          // Interrupts are disabled by default, enable them.
+     37            enable_interrupts();
+   \   00004E   ........     CALLA   #enable_interrupts
+     38          //------------------------------------------------------------------------------
+     39          }
+   \   000052   3A41         POP.W   R10
+   \   000054   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      6   Init_Conditions
+        6   -> enable_interrupts
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      86  Init_Conditions
+       1  display_mode
+       2  test_value
+
+ 
+ 86 bytes in segment CODE
+  3 bytes in segment DATA16_Z
+ 
+ 86 bytes of CODE memory
+  3 bytes of DATA memory
+
+Errors: none
+Warnings: none

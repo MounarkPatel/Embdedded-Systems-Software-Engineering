@@ -1,0 +1,494 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.12.3.989/W32 for MSP430           15/Oct/2019  12:57:19
+# Copyright 1996-2019 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 7.12
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  Z:\Applications\306\Project 05\main.c
+#    Command line  =  
+#        -f C:\Users\MOUNAR~1\AppData\Local\Temp\EW7BA7.tmp
+#        ("Z:\Applications\306\Project 05\main.c" -lC
+#        "Z:\Applications\306\Project 05\Debug\List" -o
+#        "Z:\Applications\306\Project 05\Debug\Obj" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR2355__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 8.0\430\lib\dlib\dl430xlsfn.h" -I ./\ --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large)
+#    Locale        =  English_USA.1252
+#    List file     =  Z:\Applications\306\Project 05\Debug\List\main.lst
+#    Object file   =  Z:\Applications\306\Project 05\Debug\Obj\main.r43
+#
+###############################################################################
+
+Z:\Applications\306\Project 05\main.c
+      1          #include  "functions.h"
+      2          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x130
+   \   union <unnamed> _A_PM5CTL0_L
+   \                     _A_PM5CTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x454
+   \   union <unnamed> _A_TB3CCR1_L
+   \                     _A_TB3CCR1_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x456
+   \   union <unnamed> _A_TB3CCR2_L
+   \                     _A_TB3CCR2_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x458
+   \   union <unnamed> _A_TB3CCR3_L
+   \                     _A_TB3CCR3_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x45a
+   \   union <unnamed> _A_TB3CCR4_L
+   \                     _A_TB3CCR4_L:
+   \   000000                DS8 2
+      3          #include  <string.h>
+      4          #include  "macros.h"
+      5          
+      6          
+      7          // Global Variables
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+      8          volatile char slow_input_down;
+   \                     slow_input_down:
+   \   000000                DS8 1
+      9          extern char display_line[DISPLAY_HEIGHT][DISPLAY_LENGTH];
+     10          extern char *display[DISP_PTR];
+     11          extern unsigned char display_mode;
+     12          extern volatile unsigned char display_changed;
+     13          extern volatile unsigned char update_display;
+     14          extern volatile unsigned int update_display_count;
+
+   \                                 In  segment DATA16_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     15          volatile unsigned int Time_Sequence;
+   \                     Time_Sequence:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     16          volatile char one_time;
+   \                     one_time:
+   \   000000                DS8 1
+     17          extern unsigned int test_value;
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     18          char chosen_direction;
+   \                     chosen_direction:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA16_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero
+     19          char change;
+   \                     change:
+   \   000000                DS8 1
+     20          extern int sw1_p;
+     21          extern int sw2_p;
+     22          extern volatile int wait_200;
+     23          
+
+   \                                 In  segment CODE, align 2
+     24          void main(void){
+   \                     main:
+     25          //------------------------------------------------------------------------------
+     26          // Main Program
+     27          // This is the main routine for the program. Execution of code starts here.
+     28          // The operating system is Back Ground Fore Ground.
+     29          //
+     30          //------------------------------------------------------------------------------
+     31          // Disable the GPIO power-on default high-impedance mode to activate
+     32          // previously configured port settings
+     33            PM5CTL0 &= ~LOCKLPM5;
+   \   000000   92C33001     BIC.W   #0x1, &0x130
+     34            Init_Ports();                        // Initialize Ports
+   \   000004   ........     CALLA   #Init_Ports
+     35            Init_Clocks();                       // Initialize Clock System
+   \   000008   ........     CALLA   #Init_Clocks
+     36            Init_Conditions();                   // Initialize Variables and Initial Conditions
+   \   00000C   ........     CALLA   #Init_Conditions
+     37            Init_Timers();                       // Initialize Timers
+   \   000010   ........     CALLA   #Init_Timers
+     38            Init_LCD();                          // Initialize LCD
+   \   000014   ........     CALLA   #Init_LCD
+     39          
+     40            //The first state is a pause state so the display needs to be set to pause
+     41            strcpy(display_line[DISP_ENTRY_1], "   PAUSE   ");
+   \   000018   3D40....     MOV.W   #`?<Constant "   PAUSE   ">`, R13
+   \   00001C   3C40....     MOV.W   #display_line, R12
+   \   000020   ........     CALLA   #strcpy
+     42            update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   000024   0D43         MOV.W   #0x0, R13
+   \   000026   ........     CALLA   #update_string
+     43            enable_display_update();
+   \   00002A   ........     CALLA   #enable_display_update
+     44            display_changed = ALWAYS;
+   \   00002E   D243....     MOV.B   #0x1, &display_changed
+     45          
+     46          //------------------------------------------------------------------------------
+     47          // Begining of the "While" Operating System
+     48          //------------------------------------------------------------------------------
+     49            while(ALWAYS) {    
+     50              Display_Process();
+   \                     ??main_0:
+   \   000032   ........     CALLA   #Display_Process
+     51              //wait_200 is the variable incremented in Timer0_B0_ISR used to control what state the car is in
+     52              switch(wait_200)
+   \   000036   1F42....     MOV.W   &wait_200, R15
+   \   00003A   1F83         SUB.W   #0x1, R15
+   \   00003C   1F24         JEQ     ??main_2
+   \   00003E   3F80C800     SUB.W   #0xc8, R15
+   \   000042   2524         JEQ     ??main_3
+   \   000044   3F80C800     SUB.W   #0xc8, R15
+   \   000048   3824         JEQ     ??main_4
+   \   00004A   3F80C800     SUB.W   #0xc8, R15
+   \   00004E   4924         JEQ     ??main_5
+   \   000050   3F809001     SUB.W   #0x190, R15
+   \   000054   5C24         JEQ     ??main_6
+   \   000056   3F80C800     SUB.W   #0xc8, R15
+   \   00005A   6D24         JEQ     ??main_7
+   \   00005C   3F80C800     SUB.W   #0xc8, R15
+   \   000060   8024         JEQ     ??main_8
+   \   000062   3F80C800     SUB.W   #0xc8, R15
+   \   000066   9124         JEQ     ??main_9
+   \   000068   3F805802     SUB.W   #0x258, R15
+   \   00006C   A424         JEQ     ??main_10
+   \   00006E   3F80C800     SUB.W   #0xc8, R15
+   \   000072   B524         JEQ     ??main_11
+   \   000074   3F805802     SUB.W   #0x258, R15
+   \   000078   C824         JEQ     ??main_12
+   \   00007A   DB3F         JMP     ??main_0
+     53              {
+     54                //First Pause
+     55                case F_PAUSE: 
+     56                  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+   \                     ??main_2:
+   \   00007C   82435404     MOV.W   #0x0, &0x454
+     57                  LEFT_FORWARD_SPEED = WHEEL_OFF;
+   \   000080   82435604     MOV.W   #0x0, &0x456
+     58                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   000084   82435804     MOV.W   #0x0, &0x458
+     59                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   000088   82435A04     MOV.W   #0x0, &0x45a
+     60                  break;
+   \   00008C   D23F         JMP     ??main_0
+     61                //First Forward
+     62                case F_FORWARD:
+     63                  RIGHT_FORWARD_SPEED = RIGHT_S;
+   \                     ??main_3:
+   \   00008E   B240A7035404 MOV.W   #0x3a7, &0x454
+     64                  LEFT_FORWARD_SPEED = LEFT_S;
+   \   000094   B240E7035604 MOV.W   #0x3e7, &0x456
+     65                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   00009A   82435804     MOV.W   #0x0, &0x458
+     66                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   00009E   82435A04     MOV.W   #0x0, &0x45a
+     67                  strcpy(display_line[DISP_ENTRY_1], "     FOR   ");
+   \   0000A2   3D40....     MOV.W   #`?<Constant "     FOR   ">`, R13
+   \   0000A6   3C40....     MOV.W   #display_line, R12
+   \   0000AA   ........     CALLA   #strcpy
+     68                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   0000AE   0D43         MOV.W   #0x0, R13
+   \   0000B0   ........     CALLA   #update_string
+     69                  display_changed = ALWAYS;
+   \   0000B4   D243....     MOV.B   #0x1, &display_changed
+     70                  break;
+   \   0000B8   BC3F         JMP     ??main_0
+     71                //Second Pause 
+     72                case S_PAUSE:
+     73                  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+   \                     ??main_4:
+   \   0000BA   82435404     MOV.W   #0x0, &0x454
+     74                  LEFT_FORWARD_SPEED = WHEEL_OFF;
+   \   0000BE   82435604     MOV.W   #0x0, &0x456
+     75                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   0000C2   82435804     MOV.W   #0x0, &0x458
+     76                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   0000C6   82435A04     MOV.W   #0x0, &0x45a
+     77                  strcpy(display_line[DISP_ENTRY_1], "   PAUSE   ");
+   \   0000CA   3D40....     MOV.W   #`?<Constant "   PAUSE   ">`, R13
+   \   0000CE   3C40....     MOV.W   #display_line, R12
+   \   0000D2   ........     CALLA   #strcpy
+     78                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   0000D6   0D43         MOV.W   #0x0, R13
+   \   0000D8   ........     CALLA   #update_string
+     79                  display_changed = ALWAYS;
+   \   0000DC   D243....     MOV.B   #0x1, &display_changed
+     80                  break;
+   \   0000E0   A83F         JMP     ??main_0
+     81                case F_REVERSE:
+     82                  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+   \                     ??main_5:
+   \   0000E2   82435404     MOV.W   #0x0, &0x454
+     83                  LEFT_FORWARD_SPEED = WHEEL_OFF;
+   \   0000E6   82435604     MOV.W   #0x0, &0x456
+     84                  RIGHT_REVERSE_SPEED = RIGHT_R;
+   \   0000EA   B2409D035804 MOV.W   #0x39d, &0x458
+     85                  LEFT_REVERSE_SPEED = LEFT_R;
+   \   0000F0   B240E7035A04 MOV.W   #0x3e7, &0x45a
+     86                  strcpy(display_line[DISP_ENTRY_1], "     REV   ");
+   \   0000F6   3D40....     MOV.W   #`?<Constant "     REV   ">`, R13
+   \   0000FA   3C40....     MOV.W   #display_line, R12
+   \   0000FE   ........     CALLA   #strcpy
+     87                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   000102   0D43         MOV.W   #0x0, R13
+   \   000104   ........     CALLA   #update_string
+     88                  display_changed = ALWAYS;
+   \   000108   D243....     MOV.B   #0x1, &display_changed
+     89                  break;
+   \   00010C   923F         JMP     ??main_0
+     90                case T_PAUSE:
+     91                  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+   \                     ??main_6:
+   \   00010E   82435404     MOV.W   #0x0, &0x454
+     92                  LEFT_FORWARD_SPEED = WHEEL_OFF;
+   \   000112   82435604     MOV.W   #0x0, &0x456
+     93                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   000116   82435804     MOV.W   #0x0, &0x458
+     94                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   00011A   82435A04     MOV.W   #0x0, &0x45a
+     95                  strcpy(display_line[DISP_ENTRY_1], "   PAUSE   ");
+   \   00011E   3D40....     MOV.W   #`?<Constant "   PAUSE   ">`, R13
+   \   000122   3C40....     MOV.W   #display_line, R12
+   \   000126   ........     CALLA   #strcpy
+     96                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   00012A   0D43         MOV.W   #0x0, R13
+   \   00012C   ........     CALLA   #update_string
+     97                  display_changed = ALWAYS;
+   \   000130   D243....     MOV.B   #0x1, &display_changed
+     98                  break;
+   \   000134   7E3F         JMP     ??main_0
+     99                case S_FORWARD:
+    100                  RIGHT_FORWARD_SPEED = RIGHT_S;
+   \                     ??main_7:
+   \   000136   B240A7035404 MOV.W   #0x3a7, &0x454
+    101                  LEFT_FORWARD_SPEED = LEFT_S;
+   \   00013C   B240E7035604 MOV.W   #0x3e7, &0x456
+    102                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   000142   82435804     MOV.W   #0x0, &0x458
+    103                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   000146   82435A04     MOV.W   #0x0, &0x45a
+    104                  strcpy(display_line[DISP_ENTRY_1], "   FOR   ");
+   \   00014A   3D40....     MOV.W   #`?<Constant "   FOR   ">`, R13
+   \   00014E   3C40....     MOV.W   #display_line, R12
+   \   000152   ........     CALLA   #strcpy
+    105                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   000156   0D43         MOV.W   #0x0, R13
+   \   000158   ........     CALLA   #update_string
+    106                  display_changed = ALWAYS;
+   \   00015C   D243....     MOV.B   #0x1, &display_changed
+    107                  break;
+   \   000160   683F         JMP     ??main_0
+    108                case FOURTH_PAUSE:
+    109                  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+   \                     ??main_8:
+   \   000162   82435404     MOV.W   #0x0, &0x454
+    110                  LEFT_FORWARD_SPEED = WHEEL_OFF;
+   \   000166   82435604     MOV.W   #0x0, &0x456
+    111                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   00016A   82435804     MOV.W   #0x0, &0x458
+    112                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   00016E   82435A04     MOV.W   #0x0, &0x45a
+    113                  strcpy(display_line[DISP_ENTRY_1], "   PAUSE   ");
+   \   000172   3D40....     MOV.W   #`?<Constant "   PAUSE   ">`, R13
+   \   000176   3C40....     MOV.W   #display_line, R12
+   \   00017A   ........     CALLA   #strcpy
+    114                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   00017E   0D43         MOV.W   #0x0, R13
+   \   000180   ........     CALLA   #update_string
+    115                  display_changed = ALWAYS;
+   \   000184   D243....     MOV.B   #0x1, &display_changed
+    116                  break;
+   \   000188   543F         JMP     ??main_0
+    117                case COUNTER:
+    118                  RIGHT_FORWARD_SPEED = CLOCK;
+   \                     ??main_9:
+   \   00018A   B240E7035404 MOV.W   #0x3e7, &0x454
+    119                  LEFT_FORWARD_SPEED = WHEEL_OFF;
+   \   000190   82435604     MOV.W   #0x0, &0x456
+    120                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   000194   82435804     MOV.W   #0x0, &0x458
+    121                  LEFT_REVERSE_SPEED = CLOCK;
+   \   000198   B240E7035A04 MOV.W   #0x3e7, &0x45a
+    122                  strcpy(display_line[DISP_ENTRY_1], "  COUNTER  ");
+   \   00019E   3D40....     MOV.W   #`?<Constant "  COUNTER  ">`, R13
+   \   0001A2   3C40....     MOV.W   #display_line, R12
+   \   0001A6   ........     CALLA   #strcpy
+    123                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   0001AA   0D43         MOV.W   #0x0, R13
+   \   0001AC   ........     CALLA   #update_string
+    124                  display_changed = ALWAYS;
+   \   0001B0   D243....     MOV.B   #0x1, &display_changed
+    125                  break;
+   \   0001B4   3E3F         JMP     ??main_0
+    126                case FIFTH_PAUSE:
+    127                  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+   \                     ??main_10:
+   \   0001B6   82435404     MOV.W   #0x0, &0x454
+    128                  LEFT_FORWARD_SPEED = WHEEL_OFF;
+   \   0001BA   82435604     MOV.W   #0x0, &0x456
+    129                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   0001BE   82435804     MOV.W   #0x0, &0x458
+    130                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   0001C2   82435A04     MOV.W   #0x0, &0x45a
+    131                  strcpy(display_line[DISP_ENTRY_1], "   PAUSE   ");
+   \   0001C6   3D40....     MOV.W   #`?<Constant "   PAUSE   ">`, R13
+   \   0001CA   3C40....     MOV.W   #display_line, R12
+   \   0001CE   ........     CALLA   #strcpy
+    132                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   0001D2   0D43         MOV.W   #0x0, R13
+   \   0001D4   ........     CALLA   #update_string
+    133                  display_changed = ALWAYS;
+   \   0001D8   D243....     MOV.B   #0x1, &display_changed
+    134                  break;
+   \   0001DC   2A3F         JMP     ??main_0
+    135                case CLOCKWISE:
+    136                  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+   \                     ??main_11:
+   \   0001DE   82435404     MOV.W   #0x0, &0x454
+    137                  LEFT_FORWARD_SPEED = CLOCK;
+   \   0001E2   B240E7035604 MOV.W   #0x3e7, &0x456
+    138                  RIGHT_REVERSE_SPEED = CLOCK;
+   \   0001E8   B240E7035804 MOV.W   #0x3e7, &0x458
+    139                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   0001EE   82435A04     MOV.W   #0x0, &0x45a
+    140                  strcpy(display_line[DISP_ENTRY_1], "   CLOCK   ");
+   \   0001F2   3D40....     MOV.W   #`?<Constant "   CLOCK   ">`, R13
+   \   0001F6   3C40....     MOV.W   #display_line, R12
+   \   0001FA   ........     CALLA   #strcpy
+    141                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   0001FE   0D43         MOV.W   #0x0, R13
+   \   000200   ........     CALLA   #update_string
+    142                  display_changed = ALWAYS;
+   \   000204   D243....     MOV.B   #0x1, &display_changed
+    143                  break;
+   \   000208   143F         JMP     ??main_0
+    144                case FINAL_PAUSE:
+    145                  RIGHT_FORWARD_SPEED = WHEEL_OFF;
+   \                     ??main_12:
+   \   00020A   82435404     MOV.W   #0x0, &0x454
+    146                  LEFT_FORWARD_SPEED = WHEEL_OFF;
+   \   00020E   82435604     MOV.W   #0x0, &0x456
+    147                  RIGHT_REVERSE_SPEED = WHEEL_OFF;
+   \   000212   82435804     MOV.W   #0x0, &0x458
+    148                  LEFT_REVERSE_SPEED = WHEEL_OFF;
+   \   000216   82435A04     MOV.W   #0x0, &0x45a
+    149                  strcpy(display_line[DISP_ENTRY_1], "   PAUSE   ");
+   \   00021A   3D40....     MOV.W   #`?<Constant "   PAUSE   ">`, R13
+   \   00021E   3C40....     MOV.W   #display_line, R12
+   \   000222   ........     CALLA   #strcpy
+    150                  update_string(display_line[DISP_ENTRY_1], DISP_ENTRY_1);
+   \   000226   0D43         MOV.W   #0x0, R13
+   \   000228   ........     CALLA   #update_string
+    151                  display_changed = ALWAYS;
+   \   00022C   D243....     MOV.B   #0x1, &display_changed
+    152                  break;
+   \   000230   003F         JMP     ??main_0
+   \   000232   0343         NOP
+   \   000234                REQUIRE _A_PM5CTL0_L
+   \   000234                REQUIRE _A_TB3CCR1_L
+   \   000234                REQUIRE _A_TB3CCR2_L
+   \   000234                REQUIRE _A_TB3CCR3_L
+   \   000234                REQUIRE _A_TB3CCR4_L
+    153                default: 
+    154                  break;
+    155              }
+    156            }
+    157          }
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "   PAUSE   ">`:
+   \   000000   202020504155 DC8 "   PAUSE   "
+   \            534520202000
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "     FOR   ">`:
+   \   000000   202020202046 DC8 "     FOR   "
+   \            4F5220202000
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "     REV   ">`:
+   \   000000   202020202052 DC8 "     REV   "
+   \            455620202000
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "   FOR   ">`:
+   \   000000   202020464F52 DC8 "   FOR   "
+   \            20202000    
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "  COUNTER  ">`:
+   \   000000   2020434F554E DC8 "  COUNTER  "
+   \            544552202000
+
+   \                                 In  segment DATA16_C, align 1, align-sorted
+   \                     `?<Constant "   CLOCK   ">`:
+   \   000000   202020434C4F DC8 "   CLOCK   "
+   \            434B20202000
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   main
+        4   -> Display_Process
+        4   -> Init_Clocks
+        4   -> Init_Conditions
+        4   -> Init_LCD
+        4   -> Init_Ports
+        4   -> Init_Timers
+        4   -> enable_display_update
+        4   -> strcpy
+        4   -> update_string
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      12  ?<Constant "     FOR   ">
+      12  ?<Constant "     REV   ">
+      12  ?<Constant "   CLOCK   ">
+      10  ?<Constant "   FOR   ">
+      12  ?<Constant "   PAUSE   ">
+      12  ?<Constant "  COUNTER  ">
+       2  Time_Sequence
+       2  _A_PM5CTL0_L
+       2  _A_TB3CCR1_L
+       2  _A_TB3CCR2_L
+       2  _A_TB3CCR3_L
+       2  _A_TB3CCR4_L
+       1  change
+       1  chosen_direction
+     564  main
+       1  one_time
+       1  slow_input_down
+
+ 
+ 564 bytes in segment CODE
+  10 bytes in segment DATA16_AN
+  70 bytes in segment DATA16_C
+   6 bytes in segment DATA16_Z
+ 
+ 564 bytes of CODE  memory
+  70 bytes of CONST memory
+   6 bytes of DATA  memory (+ 10 bytes shared)
+
+Errors: none
+Warnings: none

@@ -1,0 +1,101 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.12.3.989/W32 for MSP430           04/Oct/2019  18:39:53
+# Copyright 1996-2019 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for Texas Instruments MSP430, 8K KickStart Edition 7.12
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  small
+#    __code_model  =  large
+#    Source file   =  Z:\Applications\306\Homework 06\switches.c
+#    Command line  =  
+#        -f C:\Users\MOUNAR~1\AppData\Local\Temp\EWB8C5.tmp
+#        ("Z:\Applications\306\Homework 06\switches.c" -lC
+#        "Z:\Applications\306\Homework 06\Debug\List" -o
+#        "Z:\Applications\306\Homework 06\Debug\Obj" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --debug -D__MSP430FR2355__ -e
+#        --double=32 --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 8.0\430\lib\dlib\dl430xlsfn.h" -I ./\ --core=430X
+#        --data_model=small -On --multiplier=32 --hw_workaround=CPU40
+#        --code_model=large)
+#    Locale        =  English_USA.1252
+#    List file     =  Z:\Applications\306\Homework 06\Debug\List\switches.lst
+#    Object file   =  Z:\Applications\306\Homework 06\Debug\Obj\switches.r43
+#
+###############################################################################
+
+Z:\Applications\306\Homework 06\switches.c
+      1          #include  "functions.h"
+      2          #include  "msp430.h"
+
+   \                                 In  segment DATA16_AN, at 0x200
+   \   union <unnamed> _A_PAIN_L
+   \                     _A_PAIN_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x220
+   \   union <unnamed> _A_PBIN_L
+   \                     _A_PBIN_L:
+   \   000000                DS8 2
+      3          #include  "macros.h"
+      4          #include  <string.h>
+      5          
+
+   \                                 In  segment CODE, align 2
+      6          void Switches_Process(void)
+   \                     Switches_Process:
+      7          {
+      8           if (!(P4IN & SW1))
+   \   000000   E2B32102     BIT.B   #0x2, &0x221
+   \   000004   032C         JC      ??Switches_Process_0
+      9           {
+     10             Init_Port3(USE_SMCLK);
+   \   000006   5C43         MOV.B   #0x1, R12
+   \   000008   ........     CALLA   #Init_Port3
+     11           }
+     12           if (!(P2IN & SW2)) 
+   \                     ??Switches_Process_0:
+   \   00000C   F2B20102     BIT.B   #0x8, &0x201
+   \   000010   032C         JC      ??Switches_Process_1
+     13           {
+     14             Init_Port3(USE_GPIO);
+   \   000012   4C43         MOV.B   #0x0, R12
+   \   000014   ........     CALLA   #Init_Port3
+     15           }
+     16          
+     17          }
+   \                     ??Switches_Process_1:
+   \   000018   1001         RETA
+   \   00001A                REQUIRE _A_PBIN_L
+   \   00001A                REQUIRE _A_PAIN_L
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Switches_Process
+        4   -> Init_Port3
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      26  Switches_Process
+       2  _A_PAIN_L
+       2  _A_PBIN_L
+
+ 
+ 26 bytes in segment CODE
+  4 bytes in segment DATA16_AN
+ 
+ 26 bytes of CODE memory
+  0 bytes of DATA memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: none
