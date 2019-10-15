@@ -5,7 +5,7 @@ https://www.youtube.com/watch?v=CkMhl6mH2F0 . As you can see I used timers, inte
 The LCD display also prints the apporpriate message in accordance to the state the car is in.
 https://www.youtube.com/watch?v=RpS5oOqgKR8 .'
 # Important files to look at to get a idea of what is going on
-macros.h, main.c, timers.c, timers_init.c and ports.c. There are a lot of files you are looking at this because I probably have it on my resume lets save each other some time.
+macros.h, main.c, timers.c, timers_init.c and ports.c.
 # Compiler and other important information
 The IAR compiler is used. (https://www.iar.com/) This is why you will see files such as .r43 and this precompiled code only works for IAR.
 
