@@ -2,8 +2,8 @@
 //
 //  Description: This file contains the Clock Initialization
 //
-//  Jim Carlson
-//  Jan 2016
+//  Mounark Patel
+//  
 //  Built with IAR Embedded Workbench Version: V7.12.1
 // ------------------------------------------------------------------------------
 #include  "functions.h"
