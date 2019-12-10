@@ -1,5 +1,5 @@
 # Embdedded-Systems-Software-Engineering
-An MSP-430 was programmed with an GS2101MIP Wi-Fi module. Sending the proper IoT commands will make my RC command go Forwards, Backwards, Left and right. In other words it will make it an autonomous car that uses IoT as navigation.
+An MSP-430 was programmed with an GS2101MIP Wi-Fi module. Sending the proper IoT commands will make my RC car go Forwards, Backwards, Left and right. In other words it will make it an autonomous car that uses IoT as navigation.
 # What I have done and decided to post so far
 https://youtu.be/mapBG7jkuEk, in this video you will see my car getting commands and doing what the car says. Unfortunately for my car to make turns successfully I have added weight in the front of my car because friction does not just exists in physics textbooks but also real life.
 The LCD display also prints the apporpriate message in accordance to the state the car is in.
